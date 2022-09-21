@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from bs4 import BeautifulSoup
 import requests
+from req import get_text
 
 
 class Roast(commands.Cog):
