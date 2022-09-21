@@ -18,10 +18,6 @@ class Greetings(commands.Cog):
     async def greet(self, ctx, member: discord.Member):
         await ctx.respond(f'{ctx.author.mention} says hello to {member.mention}!')
 
-    @commands.Cog.listener()
-    async def on_member_join(self, member):
-        await member.send('Welcome to the server!')
-
 
 def setup(bot):
     bot.add_cog(Greetings(bot))

@@ -3,6 +3,7 @@ from discord.ext import commands
 from bs4 import BeautifulSoup
 import requests
 
+
 class Roast(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -23,7 +24,8 @@ def dev_roast():
     res = requests.get("https://www.programmerinsults.com/")
     soup = BeautifulSoup(res.text, 'html.parser')
     insult_h1 = soup.find_all("h1")
-    return str(list(insult_h1[0]))[:-4][2:]
+    return insult_h1[0].text
+
 
 def setup(bot):
     bot.add_cog(Roast(bot))
