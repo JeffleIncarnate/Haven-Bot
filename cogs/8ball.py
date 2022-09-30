@@ -10,7 +10,6 @@ class EightBall(commands.Cog):
     @discord.slash_command()
     async def eight_ball(self, ctx, question: str):
         answer = await return_answer()
-
         embed = discord.Embed(
             title=answer,
             description="Question: {}".format(question),
