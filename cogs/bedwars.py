@@ -34,21 +34,19 @@ class Bedwards(commands.Cog):
         get_stats_url = f"https://api.hypixel.net/player?key={hypixel_token}&uuid={uuid}"
         user_stats = await get_json(get_stats_url)
 
-        try:
-            user_stats_dict = {
-                "wins": user_stats["player"]["stats"]["Bedwars"]["wins_bedwars"],
-                "losses": user_stats["player"]["stats"]["Bedwars"]["losses_bedwars"],
-                "kills": user_stats["player"]["stats"]["Bedwars"]["kills_bedwars"],
-                "final_kills": user_stats["player"]["stats"]["Bedwars"]["final_kills_bedwars"],
-                "beds_broken": user_stats["player"]["stats"]["Bedwars"]["beds_broken_bedwars"]
-            }
-        except KeyError:
-            return await ctx.respond(
-                embed=discord.Embed(
-                    title="User has not logged onto Hypixel Bedwars",
-                    colour=discord.Colour.from_rgb(66, 135, 245)
-                )
+        user_stats_dict = {
+            "wins": user_stats["player"]["stats"]["Bedwars"]["wins_bedwars"],
+            "losses": user_stats["player"]["stats"]["Bedwars"]["losses_bedwars"],
+            "kills": user_stats["player"]["stats"]["Bedwars"]["kills_bedwars"],
+            "final_kills": user_stats["player"]["stats"]["Bedwars"]["final_kills_bedwars"],
+            "beds_broken": user_stats["player"]["stats"]["Bedwars"]["beds_broken_bedwars"]
+        }
+        return await ctx.respond(
+            embed=discord.Embed(
+                title="User has not logged onto Hypixel Bedwars",
+                colour=discord.Colour.from_rgb(66, 135, 245)
             )
+        )
 
         embed = discord.Embed(
             title=f'Bedwars Stats for "{username}"',
@@ -59,9 +57,21 @@ class Bedwards(commands.Cog):
                         f"Total Beds Broken {user_stats_dict['beds_broken']}",
             color=discord.Colour.from_rgb(66, 135, 245)
         )
-        embed.set_thumbnail(url=f"https://mineskin.eu/helm/{username}")
 
-        await ctx.respond(embed=embed)
+        try:
+            embed.set_thumbnail(url=f"https://mineskin.eu/helm/{username}")
+        except:
+            return ctx.respond(embed=discord.Embed(
+            title=f'Bedwars Stats for "{username}"',
+            description=f"Total Wins: {user_stats_dict['wins']}\n "
+                        f"Total losses: {user_stats_dict['losses']}\n "
+                        f"Total Kills: {user_stats_dict['kills']}\n "
+                        f"Total Final Kills: {user_stats_dict['final_kills']}\n"
+                        f"Total Beds Broken {user_stats_dict['beds_broken']}",
+            color=discord.Colour.from_rgb(66, 135, 245)
+        ))
+
+        return await ctx.respond(embed=embed)
 
 
 def setup(bot):

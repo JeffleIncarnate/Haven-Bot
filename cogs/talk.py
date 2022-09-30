@@ -32,10 +32,6 @@ class Talk(commands.Cog):
         )
         await ctx.respond(embed=embed)
 
-    @discord.slash_command()
-    async def eight_ball(self, ctx, question: str):
-        pass
-
 
 def setup(bot):
     bot.add_cog(Talk(bot))

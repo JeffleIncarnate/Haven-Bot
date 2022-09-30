@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 from bs4 import BeautifulSoup
-import requests
 from req import get_text
 
 
@@ -11,7 +10,7 @@ class Roast(commands.Cog):
 
     @discord.slash_command()
     async def roast_a_dev(self, ctx):
-        roast = dev_roast()
+        roast = await dev_roast()
         await ctx.respond(
             embed=discord.Embed(
                 title=f"{roast}",
@@ -21,9 +20,9 @@ class Roast(commands.Cog):
         )
 
 
-def dev_roast():
-    res = requests.get("https://www.programmerinsults.com/")
-    soup = BeautifulSoup(res.text, 'html.parser')
+async def dev_roast():
+    res = await get_text("https://www.programmerinsults.com/")
+    soup = BeautifulSoup(res, 'html.parser')
     insult_h1 = soup.find_all("h1")
     return insult_h1[0].text
 
