@@ -30,8 +30,11 @@ class Talk(commands.Cog):
             title="EEEEEEEEEEEEEEEE",
             color=discord.Colour.from_rgb(66, 135, 245)
         )
-
         await ctx.respond(embed=embed)
+
+    @discord.slash_command()
+    async def eight_ball(self, ctx, question: str):
+        pass
 
 
 def setup(bot):

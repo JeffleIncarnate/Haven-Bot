@@ -6,12 +6,14 @@ import time
 from rich.progress import Progress
 
 load_dotenv()
-bot = discord.Bot(debug_guilds=[1021736744451838004])
-
+bot = discord.Bot(debug_guilds=[1021736744451838004], intents=discord.Intents.all())
 
 @bot.event
 async def on_ready():
     print(f"{bot.user} is ready and online!")
+    await bot.change_presence(
+        activity=discord.Game(f"On {len(bot.guilds)} servers! | /help")
+    )
 
 
 def start_bot(client: discord.Bot):
@@ -30,7 +32,7 @@ def start_bot(client: discord.Bot):
         while not progress.finished:
             for cog in cogs:
                 client.load_extension(cog)
-                time.sleep(0.5)
+                time.sleep(0.2)
                 progress.update(
                     loading_cogs,
                     advance=1,
