@@ -23,19 +23,32 @@ class Bedwards(commands.Cog):
         try:
             uuid = res_json["id"]
         except KeyError:
-            return await ctx.respond("Bad human")
+            return await ctx.respond(
+                embed=discord.Embed(
+                    title="User does not exist.",
+                    colour=discord.Colour.from_rgb(66, 135, 245)
+                )
+            )
 
         hypixel_token = os.environ['HYPIXEL_API_KEY']
         get_stats_url = f"https://api.hypixel.net/player?key={hypixel_token}&uuid={uuid}"
         user_stats = await get_json(get_stats_url)
 
-        user_stats_dict = {
-            "wins": user_stats["player"]["stats"]["Bedwars"]["wins_bedwars"],
-            "losses": user_stats["player"]["stats"]["Bedwars"]["losses_bedwars"],
-            "kills": user_stats["player"]["stats"]["Bedwars"]["kills_bedwars"],
-            "final_kills": user_stats["player"]["stats"]["Bedwars"]["final_kills_bedwars"],
-            "beds_broken": user_stats["player"]["stats"]["Bedwars"]["beds_broken_bedwars"]
-        }
+        try:
+            user_stats_dict = {
+                "wins": user_stats["player"]["stats"]["Bedwars"]["wins_bedwars"],
+                "losses": user_stats["player"]["stats"]["Bedwars"]["losses_bedwars"],
+                "kills": user_stats["player"]["stats"]["Bedwars"]["kills_bedwars"],
+                "final_kills": user_stats["player"]["stats"]["Bedwars"]["final_kills_bedwars"],
+                "beds_broken": user_stats["player"]["stats"]["Bedwars"]["beds_broken_bedwars"]
+            }
+        except KeyError:
+            return await ctx.respond(
+                embed=discord.Embed(
+                    title="User has not logged onto Hypixel Bedwars",
+                    colour=discord.Colour.from_rgb(66, 135, 245)
+                )
+            )
 
         embed = discord.Embed(
             title=f'Bedwars Stats for "{username}"',
