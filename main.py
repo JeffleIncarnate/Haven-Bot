@@ -8,6 +8,7 @@ from rich.progress import Progress
 load_dotenv()
 bot = discord.Bot(debug_guilds=[1021736744451838004], intents=discord.Intents.all())
 
+
 @bot.event
 async def on_ready():
     print(f"{bot.user} is ready and online!")

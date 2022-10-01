@@ -1,12 +1,13 @@
 import discord
 from discord.ext import commands
+from discord.utils import get
 
 
 class Help(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @discord.slash_command()
+    @discord.slash_command(description="Run this command for finding the other commands")
     async def help(self, ctx: commands.Command):
         embed = discord.Embed(
             title="Commands",
@@ -22,8 +23,10 @@ class Help(commands.Cog):
                         "**4)**\n"
                         "```/clear [messages_number]```\n"
         )
-        await ctx.respond(embed=embed)
-        discord.Reaction(emoji="😳", )
+        msg = await ctx.respond(embed=embed)
+        msg = await msg.original_message()
+        await msg.add_reaction("◀")
+        await msg.add_reaction("▶")
 
 def setup(bot):
     bot.add_cog(Help(bot))
