@@ -32,7 +32,7 @@ def start_bot(client: discord.Bot):
         while not progress.finished:
             for cog in cogs:
                 client.load_extension(cog)
-                time.sleep(0.2)
+                time.sleep(0.1)
                 progress.update(
                     loading_cogs,
                     advance=1,
@@ -40,7 +40,7 @@ def start_bot(client: discord.Bot):
                 )
         progress.update(loading_cogs, description="[bold green]Loaded all cogs")
 
-    time.sleep(1)
+    time.sleep(0.5)
 
     client.run(os.environ["TOKEN"])
 

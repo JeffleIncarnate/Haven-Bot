@@ -7,12 +7,12 @@ class EightBall(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @discord.slash_command()
-    async def eight_ball(self, ctx, question: str):
+    @discord.slash_command(description="Ask the magical 8 ball a question")
+    async def eight_ball(self, ctx, question_for_bot: str):
         answer = await return_answer()
         embed = discord.Embed(
             title=answer,
-            description="Question: {}".format(question),
+            description=f"Question: {question_for_bot}",
             color=discord.Colour.from_rgb(66, 135, 245)
         )
 

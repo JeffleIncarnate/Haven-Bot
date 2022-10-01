@@ -8,7 +8,7 @@ class Roast(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @discord.slash_command()
+    @discord.slash_command(description="Command to get a spicy dev roast")
     async def roast_a_dev(self, ctx):
         roast = await dev_roast()
         await ctx.respond(

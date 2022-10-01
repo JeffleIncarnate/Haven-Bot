@@ -7,7 +7,7 @@ class Help(commands.Cog):
         self.bot = bot
 
     @discord.slash_command()
-    async def help(self, ctx):
+    async def help(self, ctx: commands.Command):
         embed = discord.Embed(
             title="Commands",
             description=""
@@ -18,10 +18,12 @@ class Help(commands.Cog):
                         "**3)**\n"
                         "```/never_gonna_give_you_up```\n"
                         "**3)**\n"
-                        "```/kick [@user]```\n"
+                        "```/eight_ball [question]```\n"
+                        "**4)**\n"
+                        "```/clear [messages_number]```\n"
         )
         await ctx.respond(embed=embed)
-
+        discord.Reaction(emoji="😳", )
 
 def setup(bot):
     bot.add_cog(Help(bot))
