@@ -28,7 +28,8 @@ def get_youtube(video_id: str) -> dict:
         data = json.loads(response_text.decode())
         info = {
             "title": data["title"],
-            "thumbnail": data["thumbnail_url"]
+            "thumbnail": data["thumbnail_url"],
+            "author_name": data["author_name"]
         }
 
         return info
