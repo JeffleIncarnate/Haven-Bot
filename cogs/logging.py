@@ -16,7 +16,7 @@ class Logger(commands.Cog):
             title="Message Edited",
             description=f"{previous.author.name} edited their message:",
             color=discord.Colour.from_rgb(66, 135, 245),
-            timestamp=datetime.datetime.utcnow()
+            timestamp=datetime.datetime.utcnow(),
         )
         embed.add_field(name="Previous Message:", value=f"{previous.content}")
         embed.add_field(name="New Message:", value=f"{new.content}")
@@ -33,7 +33,7 @@ class Logger(commands.Cog):
             title="Message Deleted",
             description=f"{message.author.name} deleted their message:",
             color=discord.Colour.from_rgb(255, 0, 0),
-            timestamp=datetime.datetime.utcnow()
+            timestamp=datetime.datetime.utcnow(),
         )
         embed.add_field(name="Content:", value=f"{message.content}")
         embed.add_field(name="Channel", value=f"{message.channel}")
@@ -49,7 +49,7 @@ class Logger(commands.Cog):
             title="New Member",
             description=f"{member.name} has joined the server :)",
             color=discord.Colour.from_rgb(66, 135, 245),
-            timestamp=datetime.datetime.utcnow()
+            timestamp=datetime.datetime.utcnow(),
         )
 
         await channel.send(embed=embed)
@@ -63,7 +63,7 @@ class Logger(commands.Cog):
             title="Member Left",
             description=f"{member.name} has left the server :(",
             color=discord.Colour.from_rgb(255, 0, 0),
-            timestamp=datetime.datetime.utcnow()
+            timestamp=datetime.datetime.utcnow(),
         )
 
         await channel.send(embed=embed)
