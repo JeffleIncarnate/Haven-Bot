@@ -14,7 +14,7 @@ class Moderator(commands.Cog):
         try:
             await ctx.channel.purge(limit=amount)
             await ctx.respond(embed=cleared_embed)
-        except :
+        except:
             failure_embed = discord.Embed(title="Incorrect role.")
             await ctx.respond(embed=failure_embed)
 

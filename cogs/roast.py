@@ -15,14 +15,14 @@ class Roast(commands.Cog):
             embed=discord.Embed(
                 title=f"{roast}",
                 description="Powered by: https://www.programmerinsults.com/",
-                color=discord.Colour.from_rgb(66, 135, 245)
+                color=discord.Colour.from_rgb(66, 135, 245),
             )
         )
 
 
 async def dev_roast():
     res = await get_text("https://www.programmerinsults.com/")
-    soup = BeautifulSoup(res, 'html.parser')
+    soup = BeautifulSoup(res, "html.parser")
     insult_h1 = soup.find_all("h1")
     return insult_h1[0].text
 

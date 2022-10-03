@@ -7,7 +7,9 @@ class CheckRickroll(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @discord.slash_command(description="Checks if a youtube link is a rickroll, by sending back the video name")
+    @discord.slash_command(
+        description="Checks if a youtube link is a rickroll, by sending back the video name"
+    )
     async def youtube_rickroll_check(self, ctx, url: str):
         items = url.split("/")
         video_id = items[3][8:]
@@ -30,12 +32,11 @@ class CheckRickroll(commands.Cog):
         embed = discord.Embed(
             title=title,
             description=bot_guess,
-            colour=discord.Colour.from_rgb(66, 135, 245)
+            colour=discord.Colour.from_rgb(66, 135, 245),
         )
         embed.set_thumbnail(url=data["thumbnail"])
 
         await ctx.respond(embed=embed)
-
 
 
 def setup(bot):

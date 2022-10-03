@@ -11,28 +11,45 @@ class Music(commands.Cog):
     @discord.slash_command(descrition="Join the Voice channel")
     async def join(self, ctx: commands.Command):
         if ctx.author.voice is None:
-            await ctx.respond(embed=discord.Embed(
-                title="You need to be in a voice channel for me to join",
-                colour=discord.Colour.from_rgb(255, 0, 0))
+            await ctx.respond(
+                embed=discord.Embed(
+                    title="You need to be in a voice channel for me to join",
+                    colour=discord.Colour.from_rgb(255, 0, 0),
+                )
             )
         voice_channel = ctx.author.voice.channel
         if ctx.voice_client is None:
-            await ctx.respond(embed=discord.Embed(title="I have joined!", color=discord.Colour.from_rgb(66, 135, 245)))
+            await ctx.respond(
+                embed=discord.Embed(
+                    title="I have joined!", color=discord.Colour.from_rgb(66, 135, 245)
+                )
+            )
             await voice_channel.connect()
         else:
             await ctx.voice_client.move_to(voice_channel)
-            await ctx.respond(embed=discord.Embed(title="Moving voice channels!", color=discord.Colour.from_rgb(66, 135, 245)))
+            await ctx.respond(
+                embed=discord.Embed(
+                    title="Moving voice channels!",
+                    color=discord.Colour.from_rgb(66, 135, 245),
+                )
+            )
 
     @discord.slash_command(descrition="Give it a youtube url, and it will play it")
     async def play(self, ctx: commands.Command, url: str):
         voice_channel = ctx.author.voice.channel
         if ctx.voice_client is None:
             await voice_channel.connect()
-            await ctx.respond(embed=discord.Embed(title="I have joined!", color=discord.Colour.from_rgb(66, 135, 245)))
+            await ctx.respond(
+                embed=discord.Embed(
+                    title="I have joined!", color=discord.Colour.from_rgb(66, 135, 245)
+                )
+            )
 
         ctx.voice_client.stop()
-        ffmpeg_options = {"before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5",
-                          "options": "-vn"}
+        ffmpeg_options = {
+            "before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5",
+            "options": "-vn",
+        }
         ytdl_options = {"format": "bestaudio"}
         vc = ctx.voice_client
 
@@ -48,7 +65,7 @@ class Music(commands.Cog):
                 title=f"Now playing: {data['title']}",
                 description=f"Author: {data['author_name']}",
                 color=discord.Colour.from_rgb(66, 135, 245),
-                url=url
+                url=url,
             )
             embed.set_image(url=data["thumbnail"])
 
@@ -60,7 +77,8 @@ class Music(commands.Cog):
         embed = discord.Embed(
             title="Paused ⏸",
             description="/resume to continue",
-            color=discord.Colour.from_rgb(66, 135, 245))
+            color=discord.Colour.from_rgb(66, 135, 245),
+        )
         await ctx.respond(embed=embed)
         await ctx.voice_client.pause()
 
@@ -69,7 +87,8 @@ class Music(commands.Cog):
         embed = discord.Embed(
             title="Resumed ▶",
             description="/pause to pause",
-            color=discord.Colour.from_rgb(66, 135, 245))
+            color=discord.Colour.from_rgb(66, 135, 245),
+        )
         await ctx.respond(embed=embed)
         await ctx.voice_client.resume()
 
@@ -81,11 +100,17 @@ class Music(commands.Cog):
     async def leave(self, ctx: commands.Command):
         try:
             await ctx.voice_client.disconnect()
-            await ctx.respond(embed=discord.Embed(title="I have left", color=discord.Colour.from_rgb(66, 135, 245)))
+            await ctx.respond(
+                embed=discord.Embed(
+                    title="I have left", color=discord.Colour.from_rgb(66, 135, 245)
+                )
+            )
         except:
-            await ctx.respond(embed=discord.Embed(
-                title="I need to be in a vc to leave.",
-                colour=discord.Colour.from_rgb(255, 0, 0))
+            await ctx.respond(
+                embed=discord.Embed(
+                    title="I need to be in a vc to leave.",
+                    colour=discord.Colour.from_rgb(255, 0, 0),
+                )
             )
 
 

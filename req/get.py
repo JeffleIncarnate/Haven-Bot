@@ -3,6 +3,7 @@ import urllib.request
 import json
 import urllib
 
+
 async def get_json(url: str) -> dict:
     async with aiohttp.ClientSession() as session:
         response = await session.get(url)
@@ -29,7 +30,7 @@ def get_youtube(video_id: str) -> dict:
         info = {
             "title": data["title"],
             "thumbnail": data["thumbnail_url"],
-            "author_name": data["author_name"]
+            "author_name": data["author_name"],
         }
 
         return info

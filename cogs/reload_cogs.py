@@ -7,6 +7,7 @@ class ReloadCog(commands.Cog):
         self.bot = bot
 
     @discord.slash_command(description="Reload cog command")
+    @commands.has_permissions(administrator=True)
     async def reload_cog(self, ctx, cog: str):
         if f"cogs.{cog}" not in self.bot.cog:
             return await ctx.respond("You idiot, it's not a cog")
