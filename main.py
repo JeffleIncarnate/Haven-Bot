@@ -12,7 +12,7 @@ bot = discord.Bot(debug_guilds=[1026324003444502590], intents=discord.Intents.al
 
 @bot.event
 async def on_ready():
-    print(f"{bot.user} is ready and online!")
+    print(f"{bot.user} is alive and online :D!")
     await bot.change_presence(
         activity=discord.Game(f"On {len(bot.guilds)} servers! | /help")
     )

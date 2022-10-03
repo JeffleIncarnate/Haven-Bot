@@ -9,7 +9,17 @@ class Logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_edit(self, previous, new):
-        y = 1026324004631478284
+        guild_data = await self.bot.conn.fetch(
+            "SELECT channel, enabled FROM logging WHERE guild_id=$1",
+            previous.guild.id,
+        )
+
+        logging_preferences = {"channel": guild_data[0][0], "enabled": guild_data[0][1]}
+
+        if logging_preferences["enabled"] is False:
+            return
+
+        y = logging_preferences["channel"]
         channel = await self.bot.fetch_channel(y)
 
         embed = discord.Embed(
@@ -26,7 +36,17 @@ class Logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
-        y = 1026324004631478284
+        guild_data = await self.bot.conn.fetch(
+            "SELECT channel, enabled FROM logging WHERE guild_id=$1",
+            message.guild.id,
+        )
+
+        logging_preferences = {"channel": guild_data[0][0], "enabled": guild_data[0][1]}
+
+        if logging_preferences["enabled"] is False:
+            return
+
+        y = logging_preferences["channel"]
         channel = await self.bot.fetch_channel(y)
 
         embed = discord.Embed(
@@ -42,7 +62,17 @@ class Logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        y = 1026324004631478284
+        guild_data = await self.bot.conn.fetch(
+            "SELECT channel, enabled FROM logging WHERE guild_id=$1",
+            member.guild.id,
+        )
+
+        logging_preferences = {"channel": guild_data[0][0], "enabled": guild_data[0][1]}
+
+        if logging_preferences["enabled"] is False:
+            return
+
+        y = logging_preferences["channel"]
         channel = await self.bot.fetch_channel(y)
 
         embed = discord.Embed(
@@ -56,7 +86,17 @@ class Logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        y = 1026324004631478284
+        guild_data = await self.bot.conn.fetch(
+            "SELECT channel, enabled FROM logging WHERE guild_id=$1",
+            member.guild.id,
+        )
+
+        logging_preferences = {"channel": guild_data[0][0], "enabled": guild_data[0][1]}
+
+        if logging_preferences["enabled"] is False:
+            return
+
+        y = logging_preferences["channel"]
         channel = await self.bot.fetch_channel(y)
 
         embed = discord.Embed(
@@ -70,10 +110,22 @@ class Logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_update(self, previous, new):
+        guild_data = await self.bot.conn.fetch(
+            "SELECT channel, enabled FROM logging WHERE guild_id=$1",
+            previous.guild.id,
+        )
+
+        logging_preferences = {"channel": guild_data[0][0], "enabled": guild_data[0][1]}
+
+        if logging_preferences["enabled"] is False:
+            return
+
+        y = logging_preferences["channel"]
+        channel = await self.bot.fetch_channel(y)
+
         embed = None
         check = False
-        y = 1026324004631478284
-        channel = await self.bot.fetch_channel(y)
+
         if previous.nick is not None and new.nick is None:
             embed = discord.Embed(
                 color=discord.Color.blue(),
@@ -112,8 +164,19 @@ class Logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_ban(self, guild, member):
-        y = 1026324004631478284
+        guild_data = await self.bot.conn.fetch(
+            "SELECT channel, enabled FROM logging WHERE guild_id=$1",
+            guild.id,
+        )
+
+        logging_preferences = {"channel": guild_data[0][0], "enabled": guild_data[0][1]}
+
+        if logging_preferences["enabled"] is False:
+            return
+
+        y = logging_preferences["channel"]
         channel = await self.bot.fetch_channel(y)
+
         embed = discord.Embed(
             color=discord.Color.blue(),
             title="Member Banned!",
@@ -125,8 +188,19 @@ class Logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_unban(self, guild, member):
-        y = 1026324004631478284
+        guild_data = await self.bot.conn.fetch(
+            "SELECT channel, enabled FROM logging WHERE guild_id=$1",
+            guild.id,
+        )
+
+        logging_preferences = {"channel": guild_data[0][0], "enabled": guild_data[0][1]}
+
+        if logging_preferences["enabled"] is False:
+            return
+
+        y = logging_preferences["channel"]
         channel = await self.bot.fetch_channel(y)
+
         embed = discord.Embed(
             color=discord.Color.blue(),
             title="Member Unbanned!",
@@ -138,12 +212,22 @@ class Logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_channel_delete(self, channel_param):
-        y = 1026324004631478284
+        guild_data = await self.bot.conn.fetch(
+            "SELECT channel, enabled FROM logging WHERE guild_id=$1",
+            channel_param.guild.id,
+        )
+
+        logging_preferences = {"channel": guild_data[0][0], "enabled": guild_data[0][1]}
+
+        if logging_preferences["enabled"] is False:
+            return
+
+        y = logging_preferences["channel"]
         channel = await self.bot.fetch_channel(y)
         embed = discord.Embed(
             color=discord.Color.red(),
-            title="Channel deleted!",
-            description=f"{channel_param.name} Has been deleated from the server",
+            title="Channel deleted",
+            description=f"{channel_param.name} Has been deleted from the server",
             timestamp=datetime.datetime.utcnow(),
         )
         embed.add_field(name="Channel:", value=channel_param.name)
@@ -152,14 +236,25 @@ class Logger(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_channel_create(self, channel_param):
-        y = 1026324004631478284
+        guild_data = await self.bot.conn.fetch(
+            "SELECT channel, enabled FROM logging WHERE guild_id=$1",
+            channel_param.guild.id,
+        )
+
+        logging_preferences = {"channel": guild_data[0][0], "enabled": guild_data[0][1]}
+
+        if logging_preferences["enabled"] is False:
+            return
+
+        y = logging_preferences["channel"]
         channel = await self.bot.fetch_channel(y)
         embed = discord.Embed(
             color=discord.Color.green(),
-            title="Channel Created!",
+            title="Channel Created",
             description=f"{channel_param.name} Has been created on the server",
             timestamp=datetime.datetime.utcnow(),
         )
+        embed.add_field(name="Channel:", value=channel_param.name)
 
         await channel.send(embed=embed)
 
