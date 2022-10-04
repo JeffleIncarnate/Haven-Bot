@@ -13,7 +13,10 @@ class ServerInfo(commands.Cog):
             description=f"Description: {ctx.guild.description}",
             color=discord.Colour.from_rgb(66, 135, 245),
         )
-        embed.set_thumbnail(url=ctx.guild.icon)
+
+        if ctx.guild.icon is not None:
+            embed.set_thumbnail(url=ctx.guild.icon)
+
         embed.add_field(name="Owner", value=f"{ctx.guild.owner}")
         embed.add_field(name="Server ID", value=f"{ctx.guild.id}")
         embed.add_field(name="Member Count", value=f"{ctx.guild.member_count}")

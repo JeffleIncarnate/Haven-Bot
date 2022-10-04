@@ -7,7 +7,8 @@ from rich.progress import Progress
 from db import create_pool
 
 load_dotenv()
-bot = discord.Bot(debug_guilds=[1026324003444502590], intents=discord.Intents.all())
+# bot = discord.Bot(debug_guilds=[1026324003444502590], intents=discord.Intents.all())
+bot = discord.Bot(intents=discord.Intents.all())
 
 
 @bot.event
