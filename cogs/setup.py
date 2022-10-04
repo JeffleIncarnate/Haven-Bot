@@ -15,6 +15,9 @@ class SetupServer(commands.Cog):
         Returns:
             None, but does setup tables, so we can just UPDATE them when need be
         """
+        await self.bot.change_presence(
+            activity=discord.Game(f"On {len(self.bot.guilds)} servers! | /help")
+        )
 
         # For the welcome table
         welcome_vals = {
@@ -123,6 +126,9 @@ class SetupServer(commands.Cog):
     async def on_guild_remove(self, guild: discord.Guild):
         await self.bot.conn.execute("DELETE FROM welcome WHERE guild_id=$1", guild.id)
         await self.bot.conn.execute("DELETE FROM logging WHERE guild_id=$1", guild.id)
+        await self.bot.change_presence(
+            activity=discord.Game(f"On {len(self.bot.guilds)} servers! | /help")
+        )
 
     @discord.slash_command()
     async def welcome_all(self, ctx):
