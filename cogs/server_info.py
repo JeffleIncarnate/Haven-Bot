@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord.utils import get
 
 
 class ServerInfo(commands.Cog):
@@ -20,7 +19,9 @@ class ServerInfo(commands.Cog):
         embed.add_field(name="Member Count", value=f"{ctx.guild.member_count}")
         embed.add_field(name="Voice Channels", value=f"{len(ctx.guild.voice_channels)}")
         embed.add_field(name="Text Channels", value=f"{len(ctx.guild.text_channels)}")
-        embed.add_field(name="Verification Level", value=f"{ctx.guild.verification_level}")
+        embed.add_field(
+            name="Verification Level", value=f"{ctx.guild.verification_level}"
+        )
         embed.add_field(name="Server Creation", value=f"{ctx.guild.created_at}")
         await ctx.respond(embed=embed)
 
