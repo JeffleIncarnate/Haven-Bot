@@ -2,6 +2,25 @@ import discord
 from discord.ext import commands
 
 
+async def add_users_to_levelling_vals(users, bot) -> None:
+    for i in users:
+        if i.name != "Haven Bot":
+            await bot.conn.execute(
+                "INSERT INTO leveling_vals (user_name, user_id, guild_id, xp) VALUES($1, $2, $3, $4)",
+                i.name,
+                i.id,
+                i.guild.id,
+                0,
+            )
+
+
+async def delete_users_from_leveling_vals(bot, guild_id) -> None:
+    await bot.conn.execute(
+        "DELETE FROM leveling_vals WHERE guild_id=$1",
+        guild_id,
+    )
+
+
 class SetupServer(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -15,6 +34,7 @@ class SetupServer(commands.Cog):
         Returns:
             None, but does setup tables, so we can just UPDATE them when need be
         """
+
         await self.bot.change_presence(
             activity=discord.Game(f"On {len(self.bot.guilds)} servers! | /help")
         )
@@ -28,9 +48,13 @@ class SetupServer(commands.Cog):
         }
 
         # For the logging table
-        logging_vals = {"guild_id": guild.id, "channel": None, "enabled": False}
+        logging_vals = {
+            "guild_id": guild.id,
+            "channel": None,
+            "enabled": False,
+        }
 
-        # For counting vals
+        # For counting table
         counting_vals = {
             "guild_id": guild.id,
             "channel": None,
@@ -40,6 +64,14 @@ class SetupServer(commands.Cog):
             "next_num": 1,
             "highest_num": 0,
         }
+
+        # For leveling_core table
+        leveling_core = {
+            "guild_id": guild.id,
+            "enabled": False,
+        }
+
+        await add_users_to_levelling_vals(guild.members, self.bot)
 
         # Insert welcome_vals into the welcome table
         await self.bot.conn.execute(
@@ -68,6 +100,12 @@ class SetupServer(commands.Cog):
             counting_vals["author_id"],
             counting_vals["next_num"],
             counting_vals["highest_num"],
+        )
+
+        await self.bot.conn.execute(
+            "INSERT INTO leveling_core (guild_id, enabled) VALUES($1, $2)",
+            leveling_core["guild_id"],
+            leveling_core["enabled"]
         )
 
     @discord.slash_command(
@@ -182,6 +220,8 @@ class SetupServer(commands.Cog):
         await self.bot.conn.execute("DELETE FROM welcome WHERE guild_id=$1", guild.id)
         await self.bot.conn.execute("DELETE FROM logging WHERE guild_id=$1", guild.id)
         await self.bot.conn.execute("DELETE FROM counting WHERE guild_id=$1", guild.id)
+        await self.bot.conn.execute("DELETE FROM leveling_core WHERE guild_id=$1", guild.id)
+        await delete_users_from_leveling_vals(self.bot, guild.id)
         await self.bot.change_presence(
             activity=discord.Game(f"On {len(self.bot.guilds)} servers! | /help")
         )
