@@ -105,7 +105,7 @@ class SetupServer(commands.Cog):
         await self.bot.conn.execute(
             "INSERT INTO leveling_core (guild_id, enabled) VALUES($1, $2)",
             leveling_core["guild_id"],
-            leveling_core["enabled"]
+            leveling_core["enabled"],
         )
 
     @discord.slash_command(
@@ -220,7 +220,9 @@ class SetupServer(commands.Cog):
         await self.bot.conn.execute("DELETE FROM welcome WHERE guild_id=$1", guild.id)
         await self.bot.conn.execute("DELETE FROM logging WHERE guild_id=$1", guild.id)
         await self.bot.conn.execute("DELETE FROM counting WHERE guild_id=$1", guild.id)
-        await self.bot.conn.execute("DELETE FROM leveling_core WHERE guild_id=$1", guild.id)
+        await self.bot.conn.execute(
+            "DELETE FROM leveling_core WHERE guild_id=$1", guild.id
+        )
         await delete_users_from_leveling_vals(self.bot, guild.id)
         await self.bot.change_presence(
             activity=discord.Game(f"On {len(self.bot.guilds)} servers! | /help")
