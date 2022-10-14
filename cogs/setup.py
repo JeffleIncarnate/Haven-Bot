@@ -6,10 +6,11 @@ async def add_users_to_levelling_vals(users, bot) -> None:
     for i in users:
         if i.name != "Haven Bot":
             await bot.conn.execute(
-                "INSERT INTO leveling_vals (user_name, user_id, guild_id, xp) VALUES($1, $2, $3, $4)",
+                "INSERT INTO leveling_vals (user_name, user_id, guild_id, xp, level) VALUES($1, $2, $3, $4, $5)",
                 i.name,
                 i.id,
                 i.guild.id,
+                0,
                 0,
             )
 
@@ -212,6 +213,36 @@ class SetupServer(commands.Cog):
                 description="This message was to confirm that the counting channel has been setup successfully! Please delete this message.",
             )
             await channel.send(embed=embed)
+
+        await ctx.respond("Executed successfully!")
+
+    @discord.slash_command(
+        description="Run this command to setup leveling on the server"
+    )
+    @commands.has_permissions(administrator=True)
+    async def setup_leveling(self, ctx, enabled: bool):
+        leveling_vals = {
+            "guild_id": ctx.guild.id,
+            "enabled": enabled,
+        }
+
+        if leveling_vals["enabled"] is None:
+            return await ctx.respond(
+                "Please provide whether the feature is enabled"
+            )
+
+        await self.bot.conn.execute(
+            "UPDATE leveling_core SET enabled=$1 WHERE guild_id=$2",
+            leveling_vals["enabled"],
+            leveling_vals["guild_id"],
+        )
+
+        if enabled is True:
+            embed = discord.Embed(
+                title="Setup!",
+                description="This message was to confirm that leveling has been setup successfully! Please delete this message.",
+            )
+            await ctx.respond(embed=embed)
 
         await ctx.respond("Executed successfully!")
 

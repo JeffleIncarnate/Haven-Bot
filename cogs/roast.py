@@ -1,6 +1,8 @@
+from bs4 import BeautifulSoup
+
 import discord
 from discord.ext import commands
-from bs4 import BeautifulSoup
+
 from req import get_text
 
 

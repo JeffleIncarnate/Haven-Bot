@@ -1,7 +1,7 @@
+import operator
+
 import discord
 from discord.ext import commands
-
-import operator
 
 
 class Counting(commands.Cog):
@@ -18,11 +18,11 @@ class Counting(commands.Cog):
         )
 
         channel_id = res[0][1]
-        next_num = res[0][5]
         author_id = res[0][4]
+        next_num = res[0][5]
         highest_num = res[0][6]
 
-        if int(channel_id) != channel_id:
+        if channel_id != channel_id:
             return
 
         if not message.content.isnumeric():
